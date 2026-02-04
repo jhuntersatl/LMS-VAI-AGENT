@@ -25,7 +25,7 @@ class MCPConfig(BaseSettings):
     """MCP server configuration."""
 
     server_url: str = Field(default="http://localhost:8000", env="MCP_SERVER_URL")
-    api_key: str = Field(..., env="MCP_API_KEY")
+    api_key: Optional[str] = Field(default=None, env="MCP_API_KEY")
     timeout: int = Field(default=10, env="MCP_TIMEOUT")
 
 
@@ -94,6 +94,7 @@ class Config(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
+        extra="ignore",  # Ignore extra fields from .env
     )
 
     # Sub-configs

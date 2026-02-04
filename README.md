@@ -393,12 +393,15 @@ See [docs/SECURITY.md](docs/SECURITY.md) for detailed guidelines.
 
 ### Hardware Recommendations
 
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| **CPU** | 4 cores | 12+ cores |
-| **RAM** | 16 GB | 32 GB |
-| **GPU** | None | NVIDIA RTX 4090 (24GB VRAM) |
-| **Storage** | 20 GB | 100 GB SSD |
+| Component | Minimum | Recommended | Production (GMKTEC Evo-X2) |
+|-----------|---------|-------------|----------------------------|
+| **CPU** | 4 cores | 12+ cores | AMD Ryzen (12+ cores) |
+| **RAM** | 16 GB | 32 GB | 128 GB |
+| **GPU** | None | NVIDIA RTX 4090 (24GB VRAM) | NVIDIA (128GB VRAM) |
+| **Storage** | 20 GB | 100 GB SSD | 1TB+ NVMe SSD |
+| **OS** | Windows/Linux | Windows 11/Ubuntu 22.04 | Windows 11 x64 |
+
+**⚠️ Development Note**: ARM64 Windows may have audio library compatibility issues. Develop core logic on ARM, deploy to x64 for full functionality.
 
 ---
 
