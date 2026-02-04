@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  vai-agent:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: lms-vai-agent
+    environment:
+      # LMStudio (runs on host)
+      LMSTUDIO_BASE_URL: ${LMSTUDIO_BASE_URL:-http://host.docker.internal:1234}
+      LMSTUDIO_MODEL: ${LMSTUDIO_MODEL:-llama-3-70b}
+      
+      # MCP Server
+      MCP_SERVER_URL: ${MCP_SERVER_URL:-http://host.docker.internal:8000}
+      MCP_API_KEY: ${MCP_API_KEY}
+      
+      # Whisper STT
+      WHISPER_MODEL: ${WHISPER_MODEL:-base}
+      WHISPER_DEVICE: ${WHISPER_DEVICE:-cpu}
+      WHISPER_LANGUAGE: ${WHISPER_LANGUAGE:-en}
+      
+      # Coqui TTS
+      TTS_MODEL: ${TTS_MODEL:-tts_models/en/ljspeech/tacotron2-DDC}
+      TTS_DEVICE: ${TTS_DEVICE:-cpu}
+      TTS_SPEED: ${TTS_SPEED:-1.0}
+      
+      # Audio
+      AUDIO_SAMPLE_RATE: ${AUDIO_SAMPLE_RATE:-16000}
+      VAD_THRESHOLD: ${VAD_THRESHOLD:-0.5}
+      SILENCE_DURATION: ${SILENCE_DURATION:-2.0}
+      
+      # Agent
+      MAX_HISTORY: ${MAX_HISTORY:-10}
+      RESPONSE_TIMEOUT: ${RESPONSE_TIMEOUT:-30}
+      DEBUG: ${DEBUG:-false}
+      
+      # Logging
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      
+      # Performance
+      USE_GPU: ${USE_GPU:-false}
+      CACHE_DIR: /app/models
+    
+    volumes:
+      - ./logs:/app/logs
+      - ./models:/app/models
+      - ./config:/app/config
+    
+    # Audio device access (Linux only)
+    # devices:
+    #   - /dev/snd:/dev/snd
+    
+    # Allow access to host machine (for LMStudio and MCP)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    
+    restart: unless-stopped
+    
+    # Network mode for audio (optional)
+    # network_mode: host
+
+# Volumes
+volumes:
+  logs:
+  models:
